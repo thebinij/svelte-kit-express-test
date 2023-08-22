@@ -1,0 +1,33 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend # Path to your frontend directory
+      dockerfile: Dockerfile # Frontend Dockerfile
+    ports:
+      - "4001:4001"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend # Path to your backend directory
+      dockerfile: Dockerfile # Backend Dockerfile
+    ports:
+      - "4173:4173"
+    environment:
+      DATABASE_URL: postgres://user:password@database:5432/dbname # Adjust database URL
+    depends_on:
+      - database
+
+  database:
+    image: postgres:13 # Change to your desired PostgreSQL version
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: dbname
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+
+volumes:
+  postgres_data:
