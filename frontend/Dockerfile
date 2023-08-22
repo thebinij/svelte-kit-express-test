@@ -1,5 +1,5 @@
 # Use a Node.js LTS version as the base image
-FROM node:18-alpine
+FROM node:18-alpine AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -7,14 +7,15 @@ WORKDIR /app
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
-# Install production dependencies
-RUN npm install --production
+RUN npm install
+COPY . .
 
-# Copy the SvelteKit .svelte-kit folder to the container
-COPY .svelte-kit/ .svelte-kit/
+RUN npm run build AS production
 
-# Expose the port that the Node.js server will listen on (adjust if needed)
+COPY --from=build /app/build .
+COPY --from=build /app/package.json .
+COPY --from=build /app/package-lock.json .
+
+RUN npm ci --omit dev
 EXPOSE 4173
-
-# Command to run the Node.js server
-CMD ["node", "./.svelte-kit/output/server/index.js"]
+CMD ["node", "."]
