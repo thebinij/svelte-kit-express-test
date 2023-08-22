@@ -5,7 +5,7 @@ services:
       context: ./frontend # Path to your frontend directory
       dockerfile: Dockerfile # Frontend Dockerfile
     ports:
-      - "4001:4001"
+      - "4173:4173"
     depends_on:
       - backend
 
@@ -14,7 +14,7 @@ services:
       context: ./backend # Path to your backend directory
       dockerfile: Dockerfile # Backend Dockerfile
     ports:
-      - "4173:4173"
+      - "4001:4001"
     environment:
       DATABASE_URL: postgres://user:password@database:5432/dbname # Adjust database URL
     depends_on:
