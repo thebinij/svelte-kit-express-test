@@ -5,7 +5,7 @@ services:
       context: ./frontend # Path to your frontend directory
       dockerfile: Dockerfile # Frontend Dockerfile
     ports:
-      - "4173:4173"
+      - "3000:3000"
     depends_on:
       - backend
 
